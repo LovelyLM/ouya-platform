@@ -2,28 +2,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <artifactId>ouya-common</artifactId>
         <groupId>cn.ouya</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ouya-common-core</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <artifactId>ouya-common-satoken</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>cn.ouya</groupId>
-            <artifactId>ouya-common-mybatis</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.ouya</groupId>
-            <artifactId>ouya-common-satoken</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-jwt</artifactId>
+            <version>${sa-token.version}</version>
         </dependency>
     </dependencies>
 
