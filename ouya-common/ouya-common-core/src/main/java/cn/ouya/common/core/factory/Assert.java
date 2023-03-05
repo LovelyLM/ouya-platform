@@ -12,6 +12,18 @@ public class Assert extends org.springframework.util.Assert {
         throw new LogicException(code, message);
     }
 
+    public static void isAssert(String message) {
+        throw new LogicException(500, message);
+    }
+
+    public static void isAssert() {
+        throw new LogicException(500, "系统业务异常");
+    }
+
+    public static void isAssert(int code) {
+        throw new LogicException(code, "系统业务异常");
+    }
+
     public static void isTrue(int code, boolean expression, String message) {
         if (!expression) {
             throw new LogicException(code, message);

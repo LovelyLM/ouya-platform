@@ -10,7 +10,11 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author LovelyLM
@@ -24,9 +28,9 @@ public class GlobalExceptionHandler {
      * 处理自定义的业务异常
      */
     @ExceptionHandler(value = LogicException.class)
-    public CommonResponse<String> bizExceptionHandler(IllegalArgumentException e) {
+    public CommonResponse<String> bizExceptionHandler(LogicException e) {
         log.error("自定义错误信息：", e);
-        return CommonResponse.failMsg(e.getMessage());
+        return CommonResponse.failMsg(e.getCode(), e.getMessage());
     }
 
     /**
@@ -71,17 +75,29 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = BindException.class)
     public CommonResponse<String> param1ExceptionHandler(BindException e) {
-        log.error("参数错误信息：", e);
-        return CommonResponse.failMsg("参数错误！");
+        String message = Objects.requireNonNull(e.getBindingResult().getFieldError()).getField() + " : " + e.getBindingResult().getFieldError().getDefaultMessage();
+        log.error("参数错误信息：{}", message);
+        return CommonResponse.failMsg("参数错误！，" + message);
     }
 
     /**
      * 处理参数异常
      */
-    @ExceptionHandler(value = ValidationException.class)
-    public CommonResponse<String> httpMethodExceptionHandler(ValidationException e) {
-        log.error("参数错误信息：", e);
-        return CommonResponse.failMsg("参数错误");
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    public CommonResponse<String> httpMethodExceptionHandler(ConstraintViolationException e) {
+        String message = e.getMessage();
+
+        Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+        for (ConstraintViolation<?> item : violations) {
+
+            String[] propertyPath = item.getPropertyPath().toString().split("\\.");
+            String methodName = propertyPath[0];
+            String parameterName = propertyPath[1].replace("arg", "").replace(methodName, "");
+            message = parameterName + " : " + item.getMessage();
+        }
+        log.error("参数错误信息：{}", message);
+        return CommonResponse.failMsg("参数错误！，" + message);
+
     }
 
     /**
@@ -90,7 +106,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     public CommonResponse<String> httpMethodExceptionHandler(HttpRequestMethodNotSupportedException e) {
         log.error("参数错误信息：", e);
-        return CommonResponse.failMsg("不支持" + e.getMethod() + "请求！");
+        return CommonResponse.failMsg("不支持" + e.getMethod().toUpperCase() + "请求！");
     }
 
     /**

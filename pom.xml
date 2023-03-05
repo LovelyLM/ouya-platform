@@ -10,7 +10,7 @@
     <modules>
         <module>ouya-base</module>
         <module>ouya-common</module>
-        <module>product</module>
+        <module>ouya-product</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -36,9 +36,10 @@
         <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
         <nacos-client.version>2.0.0</nacos-client.version>
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
-        <hutool-all.version>5.7.2</hutool-all.version>
+        <hutool-all.version>5.8.13</hutool-all.version>
         <redisson.version>3.16.0</redisson.version>
         <log4j2.version>2.17.0</log4j2.version>
+        <satoken.version>1.34.0</satoken.version>
         <sa-token.version>1.34.0</sa-token.version>
     </properties>
 
@@ -131,10 +132,8 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+
+
     </dependencies>
 
 

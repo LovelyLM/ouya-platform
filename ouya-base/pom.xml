@@ -16,6 +16,7 @@
 
     <modules>
         <module>base-gateway</module>
+        <module>base-auth</module>
     </modules>
 
 </project>
