@@ -39,7 +39,6 @@ public class RedisService {
      * 删除单个对象
      *
      * @param key 键
-     * @return
      */
     public Boolean deleteObject(final String key) {
 
@@ -134,7 +133,6 @@ public class RedisService {
      *
      * @param key   键
      * @param clazz 返回value的类型
-     * @return
      */
     public <T> Map<String, T> getCacheMap(final String key, Class<T> clazz) {
 
@@ -165,7 +163,6 @@ public class RedisService {
      * @param key   键
      * @param hKey  Hash键
      * @param clazz 返回value的类型
-     * @return
      */
     public <T> T getCacheMapValue(final String key, final String hKey, Class<T> clazz) {
 
@@ -187,7 +184,6 @@ public class RedisService {
      * @param key      键
      * @param hKeyList Hash键集合
      * @param clazz    返回value的类型
-     * @return
      */
     public <T> List<T> getMultiCacheMapValue(final String key, final Collection hKeyList, Class<T> clazz) {
 
@@ -217,7 +213,6 @@ public class RedisService {
      *
      * @param key      需要删除的键
      * @param hKeyList 需要删除的Hash键集合
-     * @return
      */
     public Long deleteCacheMap(final String key, final List<String> hKeyList) {
 
@@ -240,7 +235,6 @@ public class RedisService {
      *
      * @param key   键
      * @param clazz 返回value的类型
-     * @return
      */
     public <T> Set<T> getCacheSet(final String key, Class<T> clazz) {
 
@@ -269,7 +263,6 @@ public class RedisService {
      *
      * @param key     需要删除的键
      * @param dataSet 需要删除的value集合
-     * @return
      */
     public <T> Long deleteCacheSet(final String key, final Set<T> dataSet) {
 
