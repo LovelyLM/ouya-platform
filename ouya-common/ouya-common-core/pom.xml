@@ -25,6 +25,11 @@
             <artifactId>ouya-common-satoken</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>cn.ouya</groupId>
+            <artifactId>ouya-common-base</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

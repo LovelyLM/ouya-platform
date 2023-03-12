@@ -1,28 +1,25 @@
 spring:
   application:
     # 应用名称
-    name: ouya-product
+    name: ouya-auth
   cloud:
     # Nacos配置中心
     nacos:
       config:
         file-extension: yml
-        group: OUYA-PRODUCT
+        group: OUYA-AUTH
         # Nacos公共配置
         shared-configs:
-          - data-id: common-mybatis.yml
+          - data-id: common-nacos.yml
             group: COMMON
             refresh: true
           - data-id: common-redis.yml
             group: COMMON
             refresh: true
-          - data-id: common-swagger.yml
-            group: COMMON
-            refresh: true
           - data-id: common-datasource.yml
             group: COMMON
             refresh: true
-          - data-id: common-spring.yml
+          - data-id: common-swagger.yml
             group: COMMON
             refresh: true
           - data-id: common-security.yml
@@ -31,18 +28,15 @@ spring:
           - data-id: common-monitor.yml
             group: COMMON
             refresh: true
-          - data-id: common-opensearch.yml
+          - data-id: common-ahas.yml
             group: COMMON
             refresh: true
           - data-id: common-util.yml
             group: COMMON
             refresh: true
-          - data-id: common-elasticsearch.yml
-            group: COMMON
-            refresh: true
-          - data-id: common-xxl-job.yml
-            group: COMMON
-            refresh: true
           - data-id: common-satoken.yml
+            group: COMMON
+            refresh: true
+          - data-id: common-spring.yml
             group: COMMON
             refresh: true

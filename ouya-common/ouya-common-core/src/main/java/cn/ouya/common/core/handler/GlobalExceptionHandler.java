@@ -2,19 +2,25 @@ package cn.ouya.common.core.handler;
 
 
 import cn.dev33.satoken.exception.*;
-import cn.ouya.common.core.exception.LogicException;
-import cn.ouya.common.core.response.CommonResponse;
+
+import cn.ouya.common.base.enums.SystemExceptionEnum;
+import cn.ouya.common.base.exception.LogicException;
+import cn.ouya.common.base.response.CommonResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import javax.validation.ValidationException;
 import java.util.Objects;
 import java.util.Set;
+
+import static cn.ouya.common.base.enums.BizExceptionEnum.RE_LOGIN_ERROR;
 
 /**
  * @author LovelyLM
@@ -40,7 +46,7 @@ public class GlobalExceptionHandler {
     public CommonResponse<String> saTokenExceptionHandler(SaTokenException saTokenException) {
         log.error("权限错误信息：", saTokenException);
         String msg = "服务器繁忙，请联系管理员~";
-        int code = CommonResponse.COMMON_FAILED;
+        int code = CommonResponse.COMMON_FAILED_CODE;
         if (saTokenException instanceof NotLoginException) {
             String type = ((NotLoginException) saTokenException).getType();
             switch (type) {
@@ -59,7 +65,7 @@ public class GlobalExceptionHandler {
                 default:
                     msg = "未登录，请登录";
             }
-            code = CommonResponse.RE_LOGIN;
+            code = RE_LOGIN_ERROR.getCode();
         } else if (saTokenException instanceof NotRoleException) {
             msg = "无此角色~~";
         } else if (saTokenException instanceof NotPermissionException) {
@@ -76,7 +82,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = BindException.class)
     public CommonResponse<String> param1ExceptionHandler(BindException e) {
         String message = Objects.requireNonNull(e.getBindingResult().getFieldError()).getField() + " : " + e.getBindingResult().getFieldError().getDefaultMessage();
-        log.error("参数错误信息：{}", message);
+        log.error("错误信息：{}", message);
         return CommonResponse.failMsg("参数错误！，" + message);
     }
 
@@ -95,7 +101,7 @@ public class GlobalExceptionHandler {
             String parameterName = propertyPath[1].replace("arg", "").replace(methodName, "");
             message = parameterName + " : " + item.getMessage();
         }
-        log.error("参数错误信息：{}", message);
+        log.error("错误信息：{}", message);
         return CommonResponse.failMsg("参数错误！，" + message);
 
     }
@@ -104,7 +110,7 @@ public class GlobalExceptionHandler {
      * 处理请求方法不支持异常
      */
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
-    public CommonResponse<String> httpMethodExceptionHandler(HttpRequestMethodNotSupportedException e) {
+    public <T> CommonResponse<T> httpMethodExceptionHandler(HttpRequestMethodNotSupportedException e) {
         log.error("参数错误信息：", e);
         return CommonResponse.failMsg("不支持" + e.getMethod().toUpperCase() + "请求！");
     }
@@ -113,8 +119,20 @@ public class GlobalExceptionHandler {
      * 处理其他异常
      */
     @ExceptionHandler(value = Exception.class)
-    public CommonResponse<String> exceptionHandler(Exception e) {
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public <T> CommonResponse<T> exceptionHandler(Exception e) {
         log.error("错误信息：", e);
-        return CommonResponse.failMsg("服务器异常！");
+        return CommonResponse.fail(SystemExceptionEnum.INTERNAL_SERVER_ERROR);
     }
+
+    /**
+     * 接口不存在
+     */
+    @ExceptionHandler(value = {NoHandlerFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public <T> CommonResponse<T> handle(NoHandlerFoundException exception) {
+        log.error(exception.getMessage());
+        return CommonResponse.fail(SystemExceptionEnum.NOT_FOUND_ERROR);
+    }
+
 }

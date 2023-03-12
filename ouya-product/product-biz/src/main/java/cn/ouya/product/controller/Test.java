@@ -1,6 +1,6 @@
 package cn.ouya.product.controller;
 
-import cn.ouya.common.core.response.CommonResponse;
+import cn.ouya.common.base.response.CommonResponse;
 import cn.ouya.common.redis.server.RedisService;
 import lombok.AllArgsConstructor;
 import lombok.Data;

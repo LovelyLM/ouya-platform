@@ -1,4 +1,4 @@
-package cn.ouya.common.core.response;
+package cn.ouya.common.base.response;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
@@ -35,10 +35,10 @@ public class CommonPage<T> {
      */
     private List<T> records;
 
-    public CommonPage (Page<T> page){
-        this.total = (int)page.getTotal();
-        this.page = (int)page.getPages();
-        this.limit = (int)page.getSize();
+    public CommonPage(Page<T> page) {
+        this.total = (int) page.getTotal();
+        this.page = (int) page.getPages();
+        this.limit = (int) page.getSize();
         this.records = page.getRecords();
     }
 

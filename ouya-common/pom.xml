@@ -19,12 +19,6 @@
         <module>ouya-common-mybatis</module>
         <module>ouya-common-satoken</module>
         <module>ouya-common-redis</module>
+        <module>ouya-common-base</module>
     </modules>
-
-    <dependencies>
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-        </dependency>
-    </dependencies>
 </project>

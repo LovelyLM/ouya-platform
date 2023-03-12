@@ -19,4 +19,5 @@ public class SaTokenConfiguration {
         return new StpLogicJwtForSimple();
     }
 
+
 }

@@ -2,6 +2,9 @@ package cn.ouya.common.core.log.filter;
 
 
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import cn.ouya.common.core.log.utils.LogUtils;
@@ -15,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -155,7 +159,9 @@ public class ResourceLogFilter implements Filter {
 
         for (String headerName : headerNames) {
             String value = response.getHeader(headerName);
-
+            if (StrUtil.equals(headerName, "Date")) {
+                value = LocalDateTimeUtil.now().format(DatePattern.NORM_DATETIME_MS_FORMATTER);
+            }
             prefixId(b, id)
                     .append(prefix)
                     .append(headerName)
@@ -177,5 +183,4 @@ public class ResourceLogFilter implements Filter {
         b.append(id).append(" ");
         return b;
     }
-
 }
