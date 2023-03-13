@@ -6,14 +6,18 @@ import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.router.SaHttpMethod;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.same.SaSameUtil;
+import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
-import cn.ouya.common.base.enums.BizExceptionEnum;
 import cn.ouya.common.base.enums.SystemExceptionEnum;
+import cn.ouya.common.base.factory.ExceptionFactory;
+import cn.ouya.common.satoken.config.StpUserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import static cn.ouya.common.base.enums.BizExceptionEnum.NEED_LOGIN_ERROR;
 
 /**
  * 权限安全配置
@@ -41,7 +45,17 @@ public class SecurityConfiguration implements WebMvcConfigurer {
         return new SaServletFilter()
                 .addInclude("/**")
                 .addExclude("/auth/**")
-                .setAuth(obj -> SaSameUtil.checkCurrentRequestToken())
+                .setAuth(e -> {
+                    // 检查是否从网关转发
+                    try {
+                        SaSameUtil.checkCurrentRequestToken();
+                    } catch (Exception exception) {
+                        return;
+                    }
+                    if (!StpUserUtil.isLogin() && !StpUtil.isLogin()) {
+                        throw ExceptionFactory.logicException(NEED_LOGIN_ERROR);
+                    }
+                })
                 .setBeforeAuth(obj -> {
                     // ---------- 设置跨域响应头 ----------
                     SaHolder.getResponse()

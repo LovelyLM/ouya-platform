@@ -1,7 +1,9 @@
 package cn.ouya.product.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.ouya.common.base.response.CommonResponse;
 import cn.ouya.common.redis.server.RedisService;
+import cn.ouya.common.satoken.config.StpUserUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ public class Test {
     @Resource
     private RedisService redisService;
 
+    @SaCheckLogin
     @GetMapping("leiming/get")
     public CommonResponse<Integer> get(String key) {
         log.info("请求成功:{}", key);
@@ -29,10 +32,11 @@ public class Test {
         return  CommonResponse.success(cacheObject);
     }
 
+    @SaCheckLogin(type = StpUserUtil.TYPE)
     @GetMapping("leiming/set")
     public CommonResponse set(String key) {
         log.info("请求成功:{}", key);
-        redisService.setCacheObject("leiming", new Student("雷鸣", 123));
+        Integer cacheObject = redisService.getCacheObject(key, Integer.class);
 
         return  CommonResponse.success();
     }

@@ -2,17 +2,11 @@ package cn.ouya.auth.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.ouya.auth.form.LoginBody;
-import cn.ouya.auth.form.RegisterBody;
-import cn.ouya.auth.form.SmsLoginBody;
 import cn.ouya.common.base.response.CommonResponse;
-import com.alibaba.nacos.api.common.Constants;
+import cn.ouya.common.satoken.config.StpUserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.constraints.NotBlank;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * token 控制
@@ -28,13 +22,24 @@ public class TokenController {
 //    private final SysLoginService sysLoginService;
 
     /**
-     * 登录方法
+     * C端登录方法
      */
-    @PostMapping("login")
-    public CommonResponse<String> login(@Validated @RequestBody LoginBody form) {
+    @PostMapping("/user/login")
+    public CommonResponse<String> userLogin(@Validated @RequestBody LoginBody form) {
+        StpUserUtil.login(1);
+        return CommonResponse.success(StpUtil.getTokenValue());
+    }
+
+    /**
+     * C端登录方法
+     */
+    @PostMapping("/admin/login")
+    public CommonResponse<String> adminLogin(@Validated @RequestBody LoginBody form) {
         StpUtil.login(1);
         return CommonResponse.success(StpUtil.getTokenValue());
     }
+
+
 
 //    /**
 //     * 短信登录

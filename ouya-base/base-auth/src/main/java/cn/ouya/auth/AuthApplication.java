@@ -2,17 +2,15 @@ package cn.ouya.auth;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan(basePackages = "cn.ouya.**")
 @EnableFeignClients("cn.ouya")
 @SpringBootApplication
-public class BaseAuthApplication {
+public class AuthApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BaseAuthApplication.class, args);
+        SpringApplication.run(AuthApplication.class, args);
     }
 }

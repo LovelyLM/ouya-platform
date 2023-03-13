@@ -7,10 +7,16 @@ import cn.dev33.satoken.router.SaHttpMethod;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
+import cn.hutool.core.util.StrUtil;
 import cn.ouya.common.base.enums.BizExceptionEnum;
+import cn.ouya.common.base.factory.Assert;
+import cn.ouya.common.base.factory.ExceptionFactory;
+import cn.ouya.gateway.config.StpUserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import static cn.ouya.common.base.enums.BizExceptionEnum.NEED_LOGIN_ERROR;
 
 /**
  * [Sa-Token 权限认证] 拦截器
@@ -35,12 +41,14 @@ public class AuthFilter {
 //                    .notMatch(ignoreWhite.getWhites())
                             .check(r -> {
                                 // 检查是否登录 是否有token
-                                StpUtil.checkLogin();
+                                if (!StpUserUtil.isLogin() && !StpUtil.isLogin()) {
+                                    throw ExceptionFactory.logicException(NEED_LOGIN_ERROR);
+                                }
                             });
                 })
                 .setError(e -> {
-                    log.error(BizExceptionEnum.ACCESS_DENIED_ERROR.getMessage());
-                    return SaResult.error(BizExceptionEnum.ACCESS_DENIED_ERROR.getMessage()).setCode(BizExceptionEnum.ACCESS_DENIED_ERROR.getCode());
+                    log.error(String.valueOf(e));
+                    return SaResult.error(BizExceptionEnum.NEED_LOGIN_ERROR.getMessage()).setCode(BizExceptionEnum.NEED_LOGIN_ERROR.getCode());
                 })
                 // 前置函数：在每次认证函数之前执行
                 .setBeforeAuth(obj -> {
@@ -61,5 +69,10 @@ public class AuthFilter {
                             .free(r -> log.info("-------- OPTIONS预检请求，不做处理"))
                             .back();
                 });
+    }
+
+
+    private static void check() {
+
     }
 }
