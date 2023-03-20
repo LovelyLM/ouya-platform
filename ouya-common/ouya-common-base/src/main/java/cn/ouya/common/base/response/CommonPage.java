@@ -1,6 +1,5 @@
 package cn.ouya.common.base.response;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,11 +34,13 @@ public class CommonPage<T> {
      */
     private List<T> records;
 
-    public CommonPage(Page<T> page) {
-        this.total = (int) page.getTotal();
-        this.page = (int) page.getPages();
-        this.limit = (int) page.getSize();
-        this.records = page.getRecords();
+    private static final CommonPage<?> EMPTY_INSTANCE = new CommonPage<>();
+
+
+    @SuppressWarnings(value = "unchecked")
+    public static <T> CommonPage<T> empty() {
+
+        return (CommonPage<T>) EMPTY_INSTANCE;
     }
 
 

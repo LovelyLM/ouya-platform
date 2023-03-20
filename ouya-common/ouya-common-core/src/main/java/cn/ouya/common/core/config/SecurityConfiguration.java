@@ -12,6 +12,8 @@ import cn.ouya.common.base.enums.SystemExceptionEnum;
 import cn.ouya.common.base.factory.ExceptionFactory;
 import cn.ouya.common.satoken.config.StpUserUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -27,6 +29,8 @@ import static cn.ouya.common.base.enums.BizExceptionEnum.NEED_LOGIN_ERROR;
 @Configuration
 @Slf4j
 public class SecurityConfiguration implements WebMvcConfigurer {
+    @Autowired
+    private SystemConstant systemConstant;
 
     /**
      * 注册sa-token的拦截器
@@ -47,13 +51,13 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                 .addExclude("/auth/**")
                 .setAuth(e -> {
                     // 检查是否从网关转发
-                    try {
-                        SaSameUtil.checkCurrentRequestToken();
-                    } catch (Exception exception) {
-                        return;
-                    }
-                    if (!StpUserUtil.isLogin() && !StpUtil.isLogin()) {
-                        throw ExceptionFactory.logicException(NEED_LOGIN_ERROR);
+                    SaSameUtil.checkCurrentRequestToken();
+                    String serverName = systemConstant.name;
+                    log.error(serverName);
+                    if (serverName.equals("ouya-product")) {
+                        StpUtil.checkLogin();
+                    } else{
+                        StpUserUtil.checkLogin();
                     }
                 })
                 .setBeforeAuth(obj -> {
@@ -79,5 +83,4 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                     return SaResult.error(SystemExceptionEnum.NOT_BY_GATEWAY_ERROR.getMessage()).setCode(SystemExceptionEnum.NOT_BY_GATEWAY_ERROR.getCode());
                 });
     }
-
 }

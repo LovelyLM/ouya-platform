@@ -21,7 +21,6 @@ import static cn.ouya.common.base.enums.BizExceptionEnum.NEED_LOGIN_ERROR;
 /**
  * [Sa-Token 权限认证] 拦截器
  *
- * @author Lion Li
  */
 @Configuration
 @Slf4j
@@ -33,7 +32,7 @@ public class AuthFilter {
     @Bean
     public SaReactorFilter getSaReactorFilter() {
         return new SaReactorFilter().addInclude("/**")
-                .addExclude( "/ouya-auth/**")
+                .addExclude("/ouya-auth/**")
                 // 鉴权方法：每次访问进入
                 .setAuth(obj -> {
                     // 登录校验 -- 拦截所有路由
@@ -69,10 +68,5 @@ public class AuthFilter {
                             .free(r -> log.info("-------- OPTIONS预检请求，不做处理"))
                             .back();
                 });
-    }
-
-
-    private static void check() {
-
     }
 }

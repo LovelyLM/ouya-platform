@@ -27,7 +27,7 @@ public class TokenController {
     @PostMapping("/user/login")
     public CommonResponse<String> userLogin(@Validated @RequestBody LoginBody form) {
         StpUserUtil.login(1);
-        return CommonResponse.success(StpUtil.getTokenValue());
+        return CommonResponse.success(StpUserUtil.getTokenValue());
     }
 
     /**

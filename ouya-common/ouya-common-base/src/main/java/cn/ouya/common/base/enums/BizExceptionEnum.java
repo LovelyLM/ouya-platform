@@ -7,7 +7,15 @@ package cn.ouya.common.base.enums;
  */
 public enum BizExceptionEnum {
 
+    /**
+     * 权限相关
+     */
     NEED_LOGIN_ERROR(10001, "暂无权限，请登录后重试。"),
+
+
+    /**
+     * 业务相关
+     */
 
     NOT_FOUND_DATA_ERROR(10002, "数据不存在，请重试。"),
 

@@ -11,12 +11,12 @@
 
     <artifactId>ouya-common-base</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>cn.ouya</groupId>
-            <artifactId>ouya-common-mybatis</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
+<!--    <dependencies>-->
+<!--        <dependency>-->
+<!--            <groupId>cn.ouya</groupId>-->
+<!--            <artifactId>ouya-common-mybatis</artifactId>-->
+<!--            <version>1.0-SNAPSHOT</version>-->
+<!--        </dependency>-->
+<!--    </dependencies>-->
 
 </project>

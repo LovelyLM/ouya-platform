@@ -40,7 +40,3 @@ spring:
           - data-id: common-spring.yml
             group: COMMON
             refresh: true
-user:
-  password:
-    maxRetryCount: 2
-    lockTime: 10
